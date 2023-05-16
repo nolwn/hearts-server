@@ -1,0 +1,23 @@
+{
+	"name": "hearts-server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "mocha",
+		"coverage": "nyc npm run test"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@istanbuljs/nyc-config-typescript": "^1.0.2",
+		"@types/chai": "^4.3.4",
+		"@types/mocha": "^10.0.1",
+		"@types/node": "^18.15.11",
+		"chai": "^4.3.7",
+		"mocha": "^10.2.0",
+		"nyc": "^15.1.0",
+		"source-map-support": "^0.5.21",
+		"ts-node": "^10.9.1"
+	}
+}
