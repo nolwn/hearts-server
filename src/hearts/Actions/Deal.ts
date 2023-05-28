@@ -28,7 +28,7 @@ export default class Deal implements Action {
 			// quarter of the deck to each player? Yes. But that's not how you deal,
 			// my Mom taught me better than that!
 			const card = this.#cards[i];
-			const p = this.#cards.length % 4;
+			const p = i % 4;
 
 			hearts.player(p).take(card);
 		}

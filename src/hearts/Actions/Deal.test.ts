@@ -32,8 +32,9 @@ describe("Deal", function () {
 
 			deal.act(hearts);
 
+			let i = 0;
 			for (const player of hearts.players()) {
-				expect(player.cards().length).to.equal(56 / 4);
+				expect(player.cards().length, `player ${++i}`).to.equal(52 / 4);
 			}
 		});
 	});

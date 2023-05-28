@@ -46,14 +46,42 @@ export default class Card {
 	}
 
 	/**
+	 * Takes an array of cards and shuffles them.
+	 * @param cards the array of cards to shuffle.
+	 * @returns an array of cards, shuffled
+	 */
+	static shuffleCards(cards: Card[]) {
+		const { length } = cards;
+
+		for (let i = 0; i < length; i++) {
+			const randomNumber = Math.random();
+
+			// take a random index from 0 to the last index minus the number of cards
+			// that have already been (pseudo) randomized.
+			const randomIndex = Math.floor(randomNumber * (length - i));
+
+			// slide the index so that it runs from i to the last index, instead of from
+			// 0 to the last index minus i.
+			const position = randomIndex + i;
+
+			// swap the current card with the randomly selected card.
+			const tmp = cards[position];
+			cards[position] = cards[i];
+			cards[i] = tmp;
+		}
+
+		return cards;
+	}
+
+	/**
 	 * equals takes another card and returns true of the suit and value of the card that
 	 * was passed in matches the suit an value of this card.
 	 * @param card is a Card object to compare this card against
 	 * @returns true if the suit and value of the comparison card matches this card
 	 */
 	equals(card: Card) {
-		const isSuitMatch = card.#suit === this.#suit;
-		const isValueMatch = card.#value === this.#value;
+		const isSuitMatch = card.suit() === this.suit();
+		const isValueMatch = card.value() === this.value();
 
 		return isSuitMatch && isValueMatch;
 	}

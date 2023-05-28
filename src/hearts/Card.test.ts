@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { restore, replace, fake } from "sinon";
 import Card from "./Card";
 
 describe("Card", function () {
@@ -79,4 +80,74 @@ describe("Card", function () {
 			expect(card.greaterThan(comparison)).to.been.true;
 		});
 	});
+
+	describe("shuffleCards", function () {
+		// The only way I could think to test this was by working out how I expect the
+		// shuffling algorithm to work, and then making sure it works that way. It's
+		// not ideal perhaps because the tests are a little funny to read and because
+		// it shouldn't matter precisely how the card are shuffled so long as they
+		// are shuffled. I will fix this if I can think of a more sensible way of testing
+		// this.
+
+		// I am currently shuffling everything in place. I iterate through the list of
+		// cards, swapping each card with a card later in the list which I select with
+		// a random number from i to the length of the list. By replacing Math.random()
+		// with a fake, I can work out how I expect the cards to have been scrambled.
+
+		const unshuffled = [
+			new Card("Four", "Clubs"),
+			new Card("Ace", "Diamonds"),
+			new Card("Eight", "Spades"),
+			new Card("Two", "Hearts"),
+		];
+
+		afterEach(function () {
+			restore(); // sinon
+		});
+
+		it("should shuffle, always taking the first card", function () {
+			// should take the card from the front each time
+			replace(Math, "random", fake.returns(0));
+			let shuffled = Card.shuffleCards([...unshuffled]);
+			checkCards([...unshuffled], shuffled);
+		});
+
+		it("should shuffle, always taking the last card", function () {
+			// should take the card from the middle each time
+			const expectedCards = [
+				new Card("Two", "Hearts"),
+				new Card("Four", "Clubs"),
+				new Card("Ace", "Diamonds"),
+				new Card("Eight", "Spades"),
+			];
+
+			// should take the card from the end each time
+			replace(Math, "random", fake.returns(0.99));
+			const shuffled = Card.shuffleCards([...unshuffled]);
+			checkCards(expectedCards, shuffled);
+		});
+
+		it("should shuffle, always taking the middle card", function () {
+			// should take the card from the middle each time
+			const expectedCards = [
+				new Card("Ace", "Diamonds"),
+				new Card("Eight", "Spades"),
+				new Card("Four", "Clubs"),
+				new Card("Two", "Hearts"),
+			];
+
+			replace(Math, "random", fake.returns(0.49));
+			const shuffled = Card.shuffleCards([...unshuffled]);
+			checkCards(expectedCards, shuffled);
+		});
+	});
 });
+
+function checkCards(expectedCards: Card[], actualCards: Card[]) {
+	for (let i = 0; i < expectedCards.length; i++) {
+		const expected = expectedCards[i];
+		const actual = actualCards[i];
+
+		expect(expected.equals(actual)).to.be.true;
+	}
+}
