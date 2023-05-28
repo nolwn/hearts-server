@@ -1,7 +1,7 @@
 import Hearts from "../Hearts";
 import { Action } from "./Action";
 
-export default class Dispatcher {
+export default class ActionRunner {
 	#hearts: Hearts;
 
 	constructor(hearts: Hearts) {

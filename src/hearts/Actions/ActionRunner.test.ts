@@ -2,7 +2,7 @@ import { getPlayers } from "../testUtil";
 import { Action } from "./Action";
 import Hearts from "../Hearts";
 import { expect } from "chai";
-import Dispatcher from "./Dispatcher";
+import ActionRunner from "./ActionRunner";
 
 class MockAction implements Action {
 	#actions: Action[];
@@ -30,8 +30,8 @@ describe("Dispatcher", function () {
 		it("returns Hearts", function () {
 			const hearts = new Hearts(getPlayers());
 			const action = new MockAction();
-			const dispatcher = new Dispatcher(hearts);
-			const adjustedHearts = dispatcher.dispatch(action);
+			const actionRunner = new ActionRunner(hearts);
+			const adjustedHearts = actionRunner.dispatch(action);
 
 			expect(adjustedHearts).to.equal(hearts);
 		});
@@ -41,9 +41,9 @@ describe("Dispatcher", function () {
 			const second = new MockAction();
 			const first = new MockAction(second, third);
 			const hearts = new Hearts(getPlayers());
-			const dispatcher = new Dispatcher(hearts);
+			const actionRunner = new ActionRunner(hearts);
 
-			dispatcher.dispatch(first);
+			actionRunner.dispatch(first);
 
 			expect(first.called).to.equal(3);
 		});
