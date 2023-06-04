@@ -30,6 +30,7 @@ export type Value = (typeof VALUES)[number];
  * Ace is the highest.
  */
 export default class Card {
+	#passed: boolean;
 	#suit: Suit;
 	#value: number;
 
@@ -41,6 +42,7 @@ export default class Card {
 	 * Diamonds) to 56 (Ace of Spades).
 	 */
 	constructor(value: Value, suit: Suit) {
+		this.#passed = false;
 		this.#suit = suit;
 		this.#value = VALUES.indexOf(value);
 	}
@@ -98,6 +100,21 @@ export default class Card {
 		}
 
 		return this.#value > card.#value;
+	}
+
+	/**
+	 * marks the card as passed
+	 */
+	pass() {
+		this.#passed = true;
+	}
+
+	/**
+	 * a getter for the passed flag.
+	 * @returns returns true if the card is passed.
+	 */
+	passed(): boolean {
+		return this.#passed;
 	}
 
 	/**

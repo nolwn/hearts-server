@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import Card from "./Card";
 import Player from "./Player";
+import { getCards } from "./testUtil";
 
 describe("Player", function () {
 	const initialCards = [
@@ -54,6 +55,27 @@ describe("Player", function () {
 
 			// max value should be tested with the busted function
 			expect(total).to.equal(expectedTotal);
+		});
+
+		it("passed should return an empty array if nothing was passed", function () {
+			const cards = getCards().map(({ value, suit }) => new Card(value, suit));
+			const player = new Player(cards);
+			const passedCards = player.passed();
+
+			expect(passedCards).to.deep.equal([]);
+		});
+
+		it("passed should return the passed cards", function () {
+			const cards = getCards().map(({ value, suit }) => new Card(value, suit));
+			const player = new Player(cards);
+			const cardIndices: [number, number, number] = [1, 6, 9];
+			const expectedCards = cardIndices.map((c) => cards[c]);
+
+			player.pass(cardIndices);
+
+			const actualCards = player.passed();
+
+			expect(actualCards).to.deep.equal(expectedCards);
 		});
 	});
 

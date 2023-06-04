@@ -2,12 +2,13 @@ import InvalidActionError from "../../Errors/InvalidActionError";
 import Card from "../Card";
 import Hearts from "../Hearts";
 import { Action } from "./Action";
+import { DealData } from "./ActionData";
 
 export default class Deal implements Action {
 	#cards: Card[];
 
-	constructor(cards: Card[]) {
-		this.#cards = cards;
+	constructor({ cards }: DealData) {
+		this.#cards = cards.map(({ suit, value }) => new Card(value, suit));
 	}
 
 	act(hearts: Hearts): Action | null {

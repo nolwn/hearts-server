@@ -69,12 +69,23 @@ describe("Hearts", function () {
 			hearts.setTrump(null);
 			expect(hearts.trump()).to.be.null;
 		});
+
+		it("phase and setPhase should get and set the game phase", function () {
+			const hearts = new Hearts(getPlayers());
+
+			let phase = hearts.phase();
+			expect(phase).to.equal("Deal");
+
+			hearts.setPhase("Pass");
+			phase = hearts.phase();
+			expect(phase).to.equal("Pass");
+		});
 	});
 
 	describe("activate", function () {
 		it("should throw an error if given an out-of-bounds index", function () {
 			const hearts = new Hearts(getPlayers());
-			expect(hearts.activate.bind(this, 4)).to.throw(errorRegex(InvalidIndexError));
+			expect(hearts.activate.bind(hearts, 4)).to.throw(errorRegex(InvalidIndexError));
 		});
 
 		it("should return this", function () {
@@ -104,6 +115,51 @@ describe("Hearts", function () {
 		});
 	});
 
+	describe("deactivate", function () {
+		it("should throw an error if given an out-of-bounds index", function () {
+			const hearts = new Hearts(getPlayers());
+			expect(hearts.deactivate.bind(hearts, -1)).to.throw(InvalidIndexError);
+		});
+
+		it("should return this", function () {
+			const hearts = new Hearts(getPlayers());
+			expect(hearts.deactivate(1)).to.equal(hearts);
+		});
+
+		it("should deactivate the given player", function () {
+			const hearts = new Hearts(getPlayers());
+			const p = 1;
+
+			hearts.activate(0, 1, 2, 3);
+			hearts.deactivate(p);
+
+			expect(hearts.isActive(p)).to.be.false;
+		});
+	});
+
+	describe("hasActive", function () {
+		it("should return true if there is an active player", function () {
+			const hearts = new Hearts(getPlayers());
+			expect(hearts.hasActive()).to.be.true;
+
+			hearts.deactivate(0);
+			hearts.deactivate(1);
+			hearts.deactivate(3);
+
+			expect(hearts.hasActive()).to.be.true;
+		});
+
+		it("should return false if there are no active players", function () {
+			const hearts = new Hearts(getPlayers());
+			hearts.deactivate(0);
+			hearts.deactivate(1);
+			hearts.deactivate(2);
+			hearts.deactivate(3);
+
+			expect(hearts.hasActive()).to.be.false;
+		});
+	});
+
 	describe("player", function () {
 		it("should throw an error if the index provided is out-of-bound", function () {
 			const hearts = new Hearts(getPlayers());
@@ -126,13 +182,13 @@ describe("Hearts", function () {
 			expect(hearts.isActive.bind(this, 4)).to.throw(errorRegex(InvalidIndexError));
 		});
 
-		it("players should start as inactive", function () {
+		it("players should start as active", function () {
 			const hearts = new Hearts(getPlayers());
 
-			expect(hearts.isActive(0)).to.be.false;
-			expect(hearts.isActive(1)).to.be.false;
-			expect(hearts.isActive(2)).to.be.false;
-			expect(hearts.isActive(3)).to.be.false;
+			expect(hearts.isActive(0)).to.be.true;
+			expect(hearts.isActive(1)).to.be.true;
+			expect(hearts.isActive(2)).to.be.true;
+			expect(hearts.isActive(3)).to.be.true;
 		});
 
 		it("should get an active player", function () {

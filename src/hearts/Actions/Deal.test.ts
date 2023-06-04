@@ -8,7 +8,7 @@ import InvalidActionError from "../../Errors/InvalidActionError";
 describe("Deal", function () {
 	describe("act", function () {
 		it("should throw if a player has busted", function () {
-			const deal = new Deal(getCards());
+			const deal = new Deal({ kind: "Deal", cards: getCards() });
 			const players = [new Player([]), new Player([]), new Player([]), new Player([])];
 			players[0].add26().add26().add26().add26();
 
@@ -18,14 +18,14 @@ describe("Deal", function () {
 		});
 
 		it("should throw if a player has cards", function () {
-			const deal = new Deal(getCards());
+			const deal = new Deal({ kind: "Deal", cards: getCards() });
 			const hearts = new Hearts(getPlayers()); // getPlayers players have cards
 
 			expect(deal.act.bind(deal, hearts)).to.throw(errorRegex(InvalidActionError));
 		});
 
 		it("should deal cards to each player", function () {
-			const deal = new Deal(getCards());
+			const deal = new Deal({ kind: "Deal", cards: getCards() });
 			const players = [new Player([]), new Player([]), new Player([]), new Player([])];
 
 			const hearts = new Hearts(players);

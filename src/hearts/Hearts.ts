@@ -1,15 +1,17 @@
 import InvalidIndexError from "../Errors/InvalidIndexError";
 import Player from "./Player";
-import Card, { Suit } from "./Card";
+import { Suit } from "./Card";
 import { isValidArrayIndex } from "./util";
-import InvalidActionError from "../Errors/InvalidActionError";
+
+export type Phase = "Deal" | "Pass" | "Play";
 
 /**
  * Hearts represents the overall state of the game.
  */
 export default class Hearts {
-	#players: Player[];
 	#active: boolean[];
+	#phase: Phase;
+	#players: Player[];
 	#trump: Suit | null;
 
 	/**
@@ -24,8 +26,9 @@ export default class Hearts {
 			);
 		}
 
+		this.#active = [true, true, true, true];
+		this.#phase = "Deal";
 		this.#players = players;
-		this.#active = [false, false, false, false];
 		this.#trump = null;
 	}
 
@@ -58,6 +61,26 @@ export default class Hearts {
 	}
 
 	/**
+	 * Takes a player index and deactivates that players.
+	 * @param player the index of the player to deactivate
+	 * @returns this Hearts instance
+	 */
+	deactivate(player: number): Hearts {
+		isValidArrayIndex(player, this.#active.length - 1);
+		this.#active[player] = false;
+
+		return this;
+	}
+
+	/**
+	 * Returns true if any of the players are still active.
+	 * @returns true if any player is active.
+	 */
+	hasActive(): boolean {
+		return this.#active.includes(true);
+	}
+
+	/**
 	 * Takes a player index and returns true if that player is active.
 	 * @param p the index of a player
 	 * @returns true if the player at the given index is active
@@ -66,6 +89,15 @@ export default class Hearts {
 	isActive(p: number): boolean {
 		isValidArrayIndex(p, 3);
 		return this.#active[p];
+	}
+
+	/**
+	 * Returns the game phase, a string which reports whether the players are supposed to
+	 * pass, play, etc.
+	 * @returns the game phase.
+	 */
+	phase(): Phase {
+		return this.#phase;
 	}
 
 	/**
@@ -85,6 +117,14 @@ export default class Hearts {
 	 */
 	players(): Player[] {
 		return this.#players;
+	}
+
+	/**
+	 * sets the game phase (e.g. Deal, Play, Pass)
+	 * @param phase the phase to set the game to
+	 */
+	setPhase(phase: Phase) {
+		this.#phase = phase;
 	}
 
 	/**

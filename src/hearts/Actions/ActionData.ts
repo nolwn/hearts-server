@@ -1,8 +1,8 @@
 import { Suit, Value } from "../Card";
 
-export const ACTION_PLAY = "play";
-export const ACTION_TAKE_TRICK = "TakeTrick";
 export const ACTION_DEAL = "Deal";
+export const ACTION_PASS = "Pass";
+export const ACTION_PLAY = "Play";
 
 export interface ActionData {
 	kind: string;
@@ -13,12 +13,14 @@ export interface DealData {
 	cards: { suit: Suit; value: Value }[];
 }
 
+export interface PassData extends ActionData {
+	kind: typeof ACTION_PASS;
+	cards: [number, number, number];
+	player: number;
+}
+
 export interface PlayData extends ActionData {
 	kind: typeof ACTION_PLAY;
 	card: number;
 	player: number;
-}
-
-export interface TakeTrickData extends ActionData {
-	kind: typeof ACTION_TAKE_TRICK;
 }

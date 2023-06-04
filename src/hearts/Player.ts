@@ -55,6 +55,36 @@ export default class Player {
 	}
 
 	/**
+	 * pass takes exactly three cards and makes them "passing" within a players hand.
+	 * They don't yet leave a players hand, and it's the responsibility of some Action
+	 * to actually remove the cards from the player at the appropriate time.
+	 * @param cards the cards a player is passing
+	 */
+	pass(cards: [number, number, number]): Player {
+		for (const c of cards) {
+			isValidArrayIndex(c, this.#cards.length - 1);
+
+			this.#cards[c].pass();
+		}
+
+		return this;
+	}
+
+	/**
+	 * A getter for the cards that a player has passed.
+	 * @returns the Cards that a player has passed
+	 */
+	passed(): Card[] {
+		const cards: Card[] = [];
+
+		for (const card of this.#cards) {
+			if (card.passed()) cards.push(card);
+		}
+
+		return cards;
+	}
+
+	/**
 	 * play takes an index and sets as played the card at the given index. It also
 	 * removes the card from the player.
 	 * @param c the index of the card to play

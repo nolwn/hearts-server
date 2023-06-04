@@ -15,6 +15,19 @@ describe("Card", function () {
 			const value = card.value();
 			expect(value).to.equal(expectedValue);
 		});
+
+		it("should set and get passed", function () {
+			const card = new Card("Ten", "Hearts");
+			let passed = card.passed();
+
+			expect(passed).to.be.false;
+
+			card.pass();
+
+			passed = card.passed();
+
+			expect(passed).to.be.true;
+		});
 	});
 
 	describe("equals", function () {

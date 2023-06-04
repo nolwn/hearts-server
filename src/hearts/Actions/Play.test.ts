@@ -11,8 +11,11 @@ describe("Play", function () {
 	describe("act", function () {
 		it("should reject playing a card for an inactive player", function () {
 			// hearts starts off with all inactive players
+			const p = 0;
 			const hearts = new Hearts(getPlayers());
-			const play = new Play({ kind: ACTION_PLAY, player: 0, card: 0 });
+			const play = new Play({ kind: ACTION_PLAY, player: p, card: 0 });
+
+			hearts.deactivate(p);
 
 			expect(play.act.bind(play, hearts)).to.throw(errorRegex(InvalidActionError));
 		});
@@ -20,7 +23,8 @@ describe("Play", function () {
 		it("should reject playing a card that doesn't exist", function () {
 			const hearts = new Hearts(getPlayers());
 			const h = 0;
-			const play = new Play({ kind: ACTION_PLAY, player: h, card: 10 });
+			const c = hearts.player(h).cards().length;
+			const play = new Play({ kind: ACTION_PLAY, player: h, card: c });
 			hearts.activate(h);
 
 			expect(play.act.bind(play, hearts)).to.throw(errorRegex(InvalidIndexError));
