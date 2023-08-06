@@ -131,9 +131,7 @@ export default class Player {
 	}
 
 	/**
-	 * addRound adds the round score to the players total and returns true if the player
-	 * has busted.
-	 * @returns true if the player has busted, else false
+	 * addRound adds the round score to the players total.
 	 */
 	addRound() {
 		this.#points += this.#roundScore;

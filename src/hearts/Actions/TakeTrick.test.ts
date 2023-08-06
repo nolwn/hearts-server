@@ -86,11 +86,11 @@ describe("TakeTrick", function () {
 			expect(otherPlayer.addRound().points()).to.equal(0);
 		});
 
-		it("should ignore players who play cards off suit", function () {
+		it("should never pass to players who play cards off suit", function () {
 			const takeTrick = new TakeTrick();
 			const suit: Suit = "Hearts";
 
-			// the highest played card should be a Spade, but the trump will be Hearts
+			// the highest played card should be a Spade, but the trump is Hearts
 			const players = [
 				new Player([new Card("Three", suit)]).play(0),
 				new Player([new Card("Two", suit)]).play(0),
