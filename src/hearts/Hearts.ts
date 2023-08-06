@@ -3,7 +3,7 @@ import Player from "./Player";
 import { Suit } from "./Card";
 import { isValidArrayIndex } from "./util";
 
-export type Phase = "Deal" | "Pass" | "Play";
+export type Phase = "Deal" | "Pass" | "Play" | "Over";
 
 /**
  * Hearts represents the overall state of the game.
